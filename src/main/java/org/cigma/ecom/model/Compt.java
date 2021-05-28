@@ -6,6 +6,7 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public class Compt {
     @Id
+    private int Id;
     private String username;
     private String password;
     private String email;
