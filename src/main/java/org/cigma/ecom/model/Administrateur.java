@@ -1,16 +1,20 @@
 package org.cigma.ecom.model;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.Polymorphism;
+import org.hibernate.annotations.PolymorphismType;
+
+import javax.persistence.*;
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
 public class Administrateur extends Compt{
     private String nom;
     private String tele;
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     private List<Article> listArticles;
 
     public void setNom(String nom) {
