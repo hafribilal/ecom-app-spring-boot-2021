@@ -1,17 +1,22 @@
 package org.cigma.ecom.model;
 
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 
 @MappedSuperclass
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Compt {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
+    private int id;
     private String username;
     private String password;
     private String email;
 
     public void setUsername(String username) {
-        this.username = username;
+        if(this.password == null){
+            this.username = username;
+        }
     }
 
     public void setPassword(String newPassword, String oldPassword) {
