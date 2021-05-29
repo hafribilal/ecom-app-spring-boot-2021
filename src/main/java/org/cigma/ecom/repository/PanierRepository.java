@@ -8,6 +8,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import java.util.List;
 
 public interface PanierRepository extends PagingAndSortingRepository<Panier,Integer> {
-    List<Panier> findPanierByProprietaireUsername(String username);
+    List<Panier> findPanierByProprietaire_Username(String username);
     Page<Panier> findPanierByProprietaire_Username(Pageable p, String username);
 }

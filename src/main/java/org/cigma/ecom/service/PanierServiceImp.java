@@ -32,9 +32,7 @@ public class PanierServiceImp implements IPanierService{
             old.setDate(p.getDate());
             old.setProprietaire(p.getProprietaire());
             old.setArticle(p.getArticle());
-            return repository.save(
-                    old
-            );
+            return repository.save(old);
         }
         return null;
     }
@@ -58,11 +56,11 @@ public class PanierServiceImp implements IPanierService{
 
     @Override
     public List<Panier> selectAll(String username) {
-        return (List<Panier>) repository.findPanierByProprietaireUsername(username);
+        return repository.findPanierByProprietaire_Username(username);
     }
 
     @Override
     public Page<Panier> getPage(Pageable p, String username) {
-        return (Page<Panier>) repository.findPanierByProprietaire_Username(p,username);
+        return repository.findPanierByProprietaire_Username(p,username);
     }
 }

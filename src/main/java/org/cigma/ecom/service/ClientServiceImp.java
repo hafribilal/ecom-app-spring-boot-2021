@@ -29,7 +29,9 @@ public class ClientServiceImp implements IClientService{
 
     @Override
     public void deleteClient(int id, String username) {
-
+        Client c = repository.findById(id).get();
+        if (c.getUsername() == username)
+            repository.deleteById(id);
     }
 
     @Override
