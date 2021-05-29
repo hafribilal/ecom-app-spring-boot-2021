@@ -18,7 +18,9 @@ public class ArticleServiceImp implements IArticleService{
 
     @Override
     public Article insertArticle(Article a) {
-        return repository.save(a);
+        if (a.getStock() > 0)
+            return repository.save(a);
+        return null;
     }
 
     @Override
@@ -26,7 +28,9 @@ public class ArticleServiceImp implements IArticleService{
         Article old = repository.findById(a.getId()).get();
         old.setTitre(a.getTitre());
         old.setDescription(a.getDescription());
-        old.setStock(a.getStock());
+        if (a.getStock() > 0)
+            old.setStock(a.getStock());
+        else old.setStock(1);
         old.setType(a.getType());
         old.setVendeur(a.getVendeur());
         return repository.save(old);
@@ -34,7 +38,8 @@ public class ArticleServiceImp implements IArticleService{
 
     @Override
     public void deleteArticle(int id) {
-        repository.deleteById(id);
+        if (repository.existsArticleOnPanier(id))
+            repository.deleteById(id);
     }
 
     @Override

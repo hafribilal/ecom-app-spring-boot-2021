@@ -18,7 +18,7 @@ public class PanierServiceImp implements IPanierService{
 
     @Override
     public Panier insertPanier(Panier p, String username) {
-        if (username.equals(p.getProprietaire().getUsername())){
+        if (username.equals(p.getProprietaire().getUsername()) && p.getQuantite() > 0){
             return repository.save(p);
         }
         return null;
@@ -28,7 +28,9 @@ public class PanierServiceImp implements IPanierService{
     public Panier updatePanier(Panier p, String username) {
         if (username.equals(p.getProprietaire().getUsername())){
             Panier old = repository.findById(p.getId()).get();
-            old.setQuantite(p.getQuantite());
+            if (p.getQuantite() > 0)
+                old.setQuantite(p.getQuantite());
+            else old.setQuantite(1);
             old.setDate(p.getDate());
             old.setProprietaire(p.getProprietaire());
             old.setArticle(p.getArticle());
