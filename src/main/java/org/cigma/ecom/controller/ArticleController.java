@@ -24,6 +24,17 @@ public class ArticleController {
         return service.getPage(pageParams);
     }
 
+    @GetMapping(path = "/search", params = { "q","pageNumber", "pageSize" }, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Page<Article> search(@RequestParam("q") String search, @RequestParam("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize){
+        Pageable pageParams = PageRequest.of(pageNumber, pageSize);
+        return service.search(search,pageParams);
+    }
+
+    @GetMapping(path = "/search", params = { "q" }, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Article> search(@RequestParam("q") String search){
+        return service.search(search);
+    }
+
     @GetMapping(path="/{id}",produces= MediaType.APPLICATION_JSON_VALUE)
     public Article getOne(@PathVariable("id") int id) {
         return service.selectOne(id);

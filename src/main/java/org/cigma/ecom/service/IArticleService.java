@@ -12,5 +12,7 @@ public interface IArticleService {
     void deleteArticle(int id);
     Article selectOne(int id);
     List<Article> selectAll();
-    public Page<Article> getPage(Pageable p);
+    Page<Article> getPage(Pageable p);
+    List<Article> search(String search);
+    Page<Article> search(String search, Pageable p);
 }
