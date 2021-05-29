@@ -5,9 +5,9 @@ import org.cigma.ecom.model.Client;
 import java.util.List;
 
 public interface IClientService {
-    Client insertClient (Client c);
-    Client updateClient (Client c);
-    void deleteClient (int id);
-    public Client selectClientById (int id);
-    public List<Client> selectAll();
+    Client insertClient(Client c);
+    Client updateClient(Client c,String username);
+    void deleteClient(int id, String username);
+    Client selectClientById(int id);
+    List<Client> selectAll();
 }

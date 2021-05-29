@@ -1,7 +1,13 @@
 package org.cigma.ecom.repository;
 
 import org.cigma.ecom.model.Panier;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface PanierRepository extends CrudRepository<Panier,Integer> {
+import java.util.List;
+
+public interface PanierRepository extends PagingAndSortingRepository<Panier,Integer> {
+    List<Panier> findPanierByProprietaireUsername(String username);
+    Page<Panier> findPanierByProprietaire_Username(Pageable p, String username);
 }

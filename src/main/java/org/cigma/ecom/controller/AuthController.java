@@ -1,10 +1,13 @@
 package org.cigma.ecom.controller;
 
+import org.cigma.ecom.model.Client;
 import org.cigma.ecom.model.Compt;
 import org.cigma.ecom.service.JwtUserDetailsService;
 import org.cigma.ecom.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -24,6 +27,16 @@ public class AuthController {
     private JwtUserDetailsService userDetailsService;
 
     @PostMapping(value = "/registration",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public String signup(@RequestBody Compt authenticationRequest) throws Exception {
+        //authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+        final String token = jwtTokenUtil.generateToken(userDetails);
+        System.out.println("Token : "+token);
+        return token;
+        //return new ResponseEntity<>(token,HttpStatus.NOT_FOUND);
+        //$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6
+    }
+
     public String createAuthenticationToken(@RequestBody Compt authenticationRequest) throws Exception {
         //authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
@@ -31,8 +44,6 @@ public class AuthController {
         System.out.println("Token : "+token);
         return token;
     }
-
-
     private void authenticate(String username, String password) throws Exception {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
