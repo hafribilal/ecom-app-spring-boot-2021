@@ -24,7 +24,13 @@ public class ClientServiceImp implements IClientService{
 
     @Override
     public Client updateClient(Client c, String username) {
-        return null;
+        Client old = repository.findById(c.getId()).get();
+        old.setVille(c.getVille());
+        old.setTele(c.getTele());
+        old.setPrenom(c.getPrenom());
+        old.setNom(old.getNom());
+        old.setEmail(old.getEmail());
+        return repository.save(c);
     }
 
     @Override
