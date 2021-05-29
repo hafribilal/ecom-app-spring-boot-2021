@@ -9,14 +9,21 @@ public class Compt {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private int id;
+    @Column(unique=true)
     private String username;
+    @Column(nullable = false)
     private String password;
+    @Column(unique=true)
     private String email;
 
     public void setUsername(String username) {
         if(this.password == null){
             this.username = username;
         }
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void setPassword(String newPassword, String oldPassword) {

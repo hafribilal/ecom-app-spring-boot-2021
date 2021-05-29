@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface IClientService {
     Client insertClient(Client c);
-    Client updateClient(Client c);
-    void deleteClient(int id);
+    Client updateClient(Client c,String username);
+    void deleteClient(int id, String username);
     Client selectClientById(int id);
     List<Client> selectAll();
 }
