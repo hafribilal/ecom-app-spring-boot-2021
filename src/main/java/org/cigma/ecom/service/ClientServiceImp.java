@@ -16,7 +16,7 @@ public class ClientServiceImp implements IClientService{
 
     @Override
     public Client insertClient(Client c) {
-        if (repository.existsById(c.getId())){
+        if (repository.existsById(c.getId()) || repository.existsUsername(c.getUsername()) || repository.existsEmail(c.getEmail())){
             return null;
         }
         return repository.save(c);
