@@ -8,4 +8,7 @@ import org.springframework.data.repository.query.Param;
 public interface ClientRepository extends CrudRepository<Client,Integer>{
     @Query("select case when count(c)> 0 then true else false end from Client c where lower(c.username) like lower(:username)")
     public boolean existsUsername(@Param("username") String username);
+
+    @Query("select case when count(c)> 0 then true else false end from Client c where lower(c.email) like lower(:email)")
+    public boolean existsEmail(@Param("email") String email);
 }
