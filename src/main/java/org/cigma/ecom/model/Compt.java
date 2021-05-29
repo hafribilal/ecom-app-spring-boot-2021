@@ -1,7 +1,10 @@
 package org.cigma.ecom.model;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 
+@Getter
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Compt {
@@ -15,6 +18,7 @@ public class Compt {
     private String password;
     @Column(unique=true)
     private String email;
+    private String role = "USER";
 
     public void setUsername(String username) {
         if(this.password == null){
@@ -22,26 +26,18 @@ public class Compt {
         }
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setPassword(String newPassword, String oldPassword) {
-        if (this.password == oldPassword){
-            this.password = newPassword;
-        }
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public String getEmail() {
-        return email;
+    public void setPassword(String newPassword, String oldPassword) {
+        if (this.password == oldPassword){
+            this.password = newPassword;
+        }
     }
 
     public boolean signin(String username, String password) {
@@ -56,16 +52,7 @@ public class Compt {
         }
     }
 
-    public boolean signup(String username, String password, String email){
-        if (this.username == null && this.email == null && this.password == null){
-            return false;
-        }else {
-            this.username = username;
-            this.password = password;
-            if (email.contains("@")){
-                this.email = email;
-            }
-            return true;
-        }
+    public void setRole(String role) {
+        this.role = role;
     }
 }

@@ -41,7 +41,7 @@ public class AuthController {
 
     @PostMapping(value = "/client/signin",consumes = MediaType.APPLICATION_JSON_VALUE)
     public String createAuthenticationToken(@RequestBody Compt authenticationRequest) throws Exception {
-        //authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+        authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails);
         System.out.println("Token : "+token);
