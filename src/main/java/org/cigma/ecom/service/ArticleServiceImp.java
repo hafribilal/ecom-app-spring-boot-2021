@@ -52,5 +52,16 @@ public class ArticleServiceImp implements IArticleService{
         return repository.findAll(p);
     }
 
+    @Override
+    public List<Article> search(String search) {
+        //return repository.findArticlesByTitreContains(search);
+        return repository.findByTitreContainsOrDescriptionContains(search,search);
+    }
+
+    @Override
+    public Page<Article> search(String search, Pageable p) {
+        //return repository.findArticlesByTitreContains(search, p);
+        return repository.findByTitreContainsOrDescriptionContains(search, search, p);
+    }
 
 }

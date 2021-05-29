@@ -2,6 +2,7 @@ package org.cigma.ecom.controller;
 
 import org.cigma.ecom.model.Client;
 import org.cigma.ecom.model.Compt;
+import org.cigma.ecom.service.IClientService;
 import org.cigma.ecom.service.JwtUserDetailsService;
 import org.cigma.ecom.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,18 +26,20 @@ public class AuthController {
     private JwtTokenUtil jwtTokenUtil;
     @Autowired
     private JwtUserDetailsService userDetailsService;
+    @Autowired
+    IClientService cService;
 
-    @PostMapping(value = "/registration",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public String signup(@RequestBody Compt authenticationRequest) throws Exception {
-        //authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-        final String token = jwtTokenUtil.generateToken(userDetails);
-        System.out.println("Token : "+token);
-        return token;
-        //return new ResponseEntity<>(token,HttpStatus.NOT_FOUND);
-        //$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6
+    @PostMapping(value = "/client/signup",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> signup(@RequestBody Client client) throws Exception {
+        HttpStatus status;
+        client = cService.insertClient(client);
+        if (client == null)
+            status = HttpStatus.NOT_ACCEPTABLE;
+        else status = HttpStatus.OK;
+        return new ResponseEntity<>(client,status);
     }
 
+    @PostMapping(value = "/client/signin",consumes = MediaType.APPLICATION_JSON_VALUE)
     public String createAuthenticationToken(@RequestBody Compt authenticationRequest) throws Exception {
         //authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
