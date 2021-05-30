@@ -14,5 +14,5 @@ public interface ClientRepository extends CrudRepository<Client,Integer>{
     @Query("select case when count(c)> 0 then true else false end from Client c where lower(c.email) like lower(:email)")
     public boolean existsEmail(@Param("email") String email);
 
-    public Client selectClientByClientName(String name);
+    public Client findClientByUsername(String username);
 }
