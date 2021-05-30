@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -28,13 +29,17 @@ public class ClientServiceImp implements IClientService{
 
     @Override
     public Client updateClient(Client c, String username) {
-        Client old = repository.findById(c.getId()).get();
-        old.setVille(c.getVille());
-        old.setTele(c.getTele());
-        old.setPrenom(c.getPrenom());
-        old.setNom(old.getNom());
-        old.setEmail(old.getEmail());
-        return repository.save(c);
+        if (username.equals(c.getUsername())){
+            Client old = repository.findById(c.getId()).get();
+            old.setVille(c.getVille());
+            old.setTele(c.getTele());
+            old.setPrenom(c.getPrenom());
+            old.setNom(old.getNom());
+            if (!repository.existsEmail(c.getEmail()))
+                old.setEmail(c.getEmail());
+            return repository.save(old);
+        }
+        return null;
     }
 
     @Override
@@ -45,12 +50,12 @@ public class ClientServiceImp implements IClientService{
     }
 
     @Override
-    public Client selectClientById(int id) {
-        return null;
+    public Optional<Client> selectClientById(int id) {
+        return repository.findById(id);
     }
 
     @Override
     public List<Client> selectAll() {
-        return null;
+        return (List<Client>) repository.findAll();
     }
 }

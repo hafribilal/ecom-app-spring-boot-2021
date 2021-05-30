@@ -1,7 +1,9 @@
 package org.cigma.ecom.controller;
 
+import org.cigma.ecom.model.Administrateur;
 import org.cigma.ecom.model.Client;
 import org.cigma.ecom.model.Compt;
+import org.cigma.ecom.service.IAdminService;
 import org.cigma.ecom.service.IClientService;
 import org.cigma.ecom.service.JwtUserDetailsService;
 import org.cigma.ecom.util.JwtTokenUtil;
@@ -28,18 +30,10 @@ public class AuthController {
     private JwtUserDetailsService userDetailsService;
     @Autowired
     IClientService cService;
+    @Autowired
+    IAdminService aService;
 
-    @PostMapping(value = "/client/signup",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> signup(@RequestBody Client client) throws Exception {
-        HttpStatus status;
-        client = cService.insertClient(client);
-        if (client == null)
-            status = HttpStatus.NOT_ACCEPTABLE;
-        else status = HttpStatus.OK;
-        return new ResponseEntity<>(client,status);
-    }
-
-    @PostMapping(value = "/client/signin",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/login",consumes = MediaType.APPLICATION_JSON_VALUE)
     public String createAuthenticationToken(@RequestBody Compt authenticationRequest) throws Exception {
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
@@ -56,5 +50,25 @@ public class AuthController {
         } catch (BadCredentialsException e) {
             throw new Exception("INVALID_CREDENTIALS", e);
         }
+    }
+
+    @PostMapping(value = "/client/signup",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> clientSignUp(@RequestBody Client client) throws Exception {
+        HttpStatus status;
+        client = cService.insertClient(client);
+        if (client == null)
+            status = HttpStatus.NOT_ACCEPTABLE;
+        else status = HttpStatus.OK;
+        return new ResponseEntity<>(client,status);
+    }
+
+    @PostMapping(value = "/admin/signup",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> adminSignUp(@RequestBody Administrateur admin) throws Exception {
+        HttpStatus status;
+        admin = aService.insertAdmin(admin);
+        if (admin == null)
+            status = HttpStatus.NOT_ACCEPTABLE;
+        else status = HttpStatus.OK;
+        return new ResponseEntity<>(admin,status);
     }
 }

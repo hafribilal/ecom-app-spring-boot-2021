@@ -45,7 +45,7 @@ public class JwtCheckFilter extends OncePerRequestFilter {
         }else {
             logger.warn("JWT does not begin with Bearer String");
         }
-        System.out.println(" = "+ username);
+        System.out.println(" = ");
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null){
             System.out.println("Username : "+username);
             UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
