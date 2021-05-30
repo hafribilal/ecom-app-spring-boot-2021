@@ -1,6 +1,7 @@
 package org.cigma.ecom.service;
 
 import org.cigma.ecom.model.Panier;
+import org.cigma.ecom.repository.ClientRepository;
 import org.cigma.ecom.repository.PanierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,13 +13,16 @@ import java.util.List;
 
 @Service
 @Transactional
-public class PanierServiceImp implements IPanierService{
+public class PanierServiceImp implements IPanierService {
     @Autowired
     PanierRepository repository;
+    @Autowired
+    ClientRepository client;
 
     @Override
     public Panier insertPanier(Panier p, String username) {
-        if (username.equals(p.getProprietaire().getUsername()) && p.getQuantite() > 0){
+        if (p.getQuantite() > 0) {
+            p.setProprietaire(client.findClientByUsername(username));
             return repository.save(p);
         }
         return null;
@@ -32,7 +36,7 @@ public class PanierServiceImp implements IPanierService{
                 old.setQuantite(p.getQuantite());
             else old.setQuantite(1);
             old.setDate(p.getDate());
-            old.setProprietaire(p.getProprietaire());
+            //old.setProprietaire(p.getProprietaire());
             old.setArticle(p.getArticle());
             return repository.save(old);
         }

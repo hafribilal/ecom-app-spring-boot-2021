@@ -1,6 +1,7 @@
 package org.cigma.ecom.service;
 
 import org.cigma.ecom.model.Article;
+import org.cigma.ecom.repository.AdministrateurRepository;
 import org.cigma.ecom.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,33 +13,40 @@ import java.util.List;
 
 @Service
 @Transactional
-public class ArticleServiceImp implements IArticleService{
+public class ArticleServiceImp implements IArticleService {
     @Autowired
     ArticleRepository repository;
+    @Autowired
+    AdministrateurRepository admin;
 
     @Override
-    public Article insertArticle(Article a) {
-        if (a.getStock() > 0)
+    public Article insertArticle(Article a, String username) {
+        if (a.getStock() > 0) {
+            a.setVendeur(admin.findAdministrateurByUsername(username));
             return repository.save(a);
+        }
         return null;
     }
 
     @Override
-    public Article updateArticle(Article a) {
-        Article old = repository.findById(a.getId()).get();
-        old.setTitre(a.getTitre());
-        old.setDescription(a.getDescription());
-        if (a.getStock() > 0)
-            old.setStock(a.getStock());
-        else old.setStock(1);
-        old.setType(a.getType());
-        old.setVendeur(a.getVendeur());
-        return repository.save(old);
+    public Article updateArticle(Article a, String username) {
+        if (a.getVendeur().getUsername() == username) {
+            Article old = repository.findById(a.getId()).get();
+            old.setTitre(a.getTitre());
+            old.setDescription(a.getDescription());
+            if (a.getStock() > 0)
+                old.setStock(a.getStock());
+            else old.setStock(1);
+            old.setType(a.getType());
+            //old.setVendeur(a.getVendeur());
+            return repository.save(old);
+        }
+        return null;
     }
 
     @Override
-    public void deleteArticle(int id) {
-        if (repository.existsArticleOnPanier(id))
+    public void deleteArticle(int id, String username) {
+        if (!repository.existsArticleOnPanier(id) && repository.findById(id).get().getVendeur().getUsername() == username)
             repository.deleteById(id);
     }
 
@@ -49,7 +57,7 @@ public class ArticleServiceImp implements IArticleService{
 
     @Override
     public List<Article> selectAll() {
-        return (List<Article>) repository.findAll();
+        return repository.findAll();
     }
 
     @Override
