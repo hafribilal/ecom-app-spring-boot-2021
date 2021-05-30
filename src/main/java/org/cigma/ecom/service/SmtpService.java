@@ -1,5 +1,6 @@
 package org.cigma.ecom.service;
 
+import org.cigma.ecom.model.Client;
 import org.cigma.ecom.model.Compt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SmtpService {
     private JavaMailSender javaMailSender;
+
 
     @Autowired
     public SmtpService (JavaMailSender javaMailSender){

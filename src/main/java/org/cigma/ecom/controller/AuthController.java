@@ -6,6 +6,7 @@ import org.cigma.ecom.model.Compt;
 import org.cigma.ecom.service.IAdminService;
 import org.cigma.ecom.service.IClientService;
 import org.cigma.ecom.service.JwtUserDetailsService;
+import org.cigma.ecom.service.SmtpService;
 import org.cigma.ecom.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,8 @@ public class AuthController {
     IClientService cService;
     @Autowired
     IAdminService aService;
+    @Autowired
+    SmtpService smtpService;
 
     @PostMapping(value = "/login",consumes = MediaType.APPLICATION_JSON_VALUE)
     public String createAuthenticationToken(@RequestBody Compt authenticationRequest) throws Exception {
@@ -58,8 +61,13 @@ public class AuthController {
         client = cService.insertClient(client);
         if (client == null)
             status = HttpStatus.NOT_ACCEPTABLE;
-        else status = HttpStatus.OK;
+        else {
+            status = HttpStatus.OK;
+            //send Mail
+            smtpService.SendMail(client);
+        }
         return new ResponseEntity<>(client,status);
+
     }
 
     @PostMapping(value = "/admin/signup",consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -68,7 +76,11 @@ public class AuthController {
         admin = aService.insertAdmin(admin);
         if (admin == null)
             status = HttpStatus.NOT_ACCEPTABLE;
-        else status = HttpStatus.OK;
+        else {
+            status = HttpStatus.OK;
+            //send Mail
+            smtpService.SendMail(admin);
+        }
         return new ResponseEntity<>(admin,status);
     }
 }
