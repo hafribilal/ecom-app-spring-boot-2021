@@ -24,6 +24,7 @@ public class AdminServiceImp implements IAdminService{
             return null;
         }
         a.setPassword(passwordEncoder.encode(a.getPassword()),a.getPassword());
+        a.setRole("ADMIN");
         return repository.save(a);
     }
 

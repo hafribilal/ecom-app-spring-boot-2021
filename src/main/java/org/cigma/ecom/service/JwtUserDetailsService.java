@@ -35,23 +35,17 @@ public class JwtUserDetailsService implements UserDetailsService {
         List<GrantedAuthority> comptAuthority;
 
         if (aRepo.existsUsername(username)){
-            System.out.println("Compt is ADMIN");
             compt = aRepo.findAdministrateurByUsername(username);
-            System.out.println("Compt is initialized");
             comptAuthority = authorityListAdmin;
         }else if (cRepo.existsUsername(username)){
-            System.out.println("Compt is USER");
             compt = cRepo.findClientByUsername(username);
-            System.out.println("Compt is initialized");
             comptAuthority = authorityListUser;
         }else {
             System.out.println("Compt NOT-FOUND");
             compt = new Compt();
-            System.out.println("Compt is initialized");
             comptAuthority = authorityListGuest;
         }
 
-        System.out.println("Compt Username "+compt.getUsername()+" Role: "+compt.getRole());
         //compt.getRole()=="ADMIN" ? authorityListAdmin : authorityListUser
         User user = new User(compt.getUsername(), compt.getPassword(), comptAuthority);
         System.out.println("User  Username "+user.getUsername()+" Role: "+user.getAuthorities());

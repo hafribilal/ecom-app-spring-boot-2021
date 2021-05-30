@@ -24,6 +24,7 @@ public class ClientServiceImp implements IClientService{
             return null;
         }
         c.setPassword(passwordEncoder.encode(c.getPassword()),c.getPassword());
+        c.setRole("USER");
         return repository.save(c);
     }
 
