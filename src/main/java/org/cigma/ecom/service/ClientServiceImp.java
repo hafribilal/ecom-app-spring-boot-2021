@@ -3,6 +3,7 @@ package org.cigma.ecom.service;
 import org.cigma.ecom.model.Client;
 import org.cigma.ecom.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -13,12 +14,15 @@ import java.util.List;
 public class ClientServiceImp implements IClientService{
     @Autowired
     ClientRepository repository;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Override
     public Client insertClient(Client c) {
         if (repository.existsById(c.getId()) || repository.existsUsername(c.getUsername()) || repository.existsEmail(c.getEmail())){
             return null;
         }
+        c.setPassword(passwordEncoder.encode(c.getPassword()),c.getPassword());
         return repository.save(c);
     }
 
