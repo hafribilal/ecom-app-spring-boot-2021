@@ -1,14 +1,18 @@
 package org.cigma.ecom.service;
 
-import org.cigma.ecom.model.Administrateur;
+import org.cigma.ecom.model.Admin;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface IAdminService {
-    Administrateur insertAdmin(Administrateur a);
-    Administrateur updateAdmin(Administrateur a,String username);
+    Admin insertAdmin(Admin a);
+
+    Admin updateAdmin(Admin a, String username);
+
     void deleteAdmin(int id, String username);
-    Optional<Administrateur> selectClientById(int id);
-    List<Administrateur> selectAll();
+
+    Optional<Admin> selectClientById(int id);
+
+    List<Admin> selectAll();
 }

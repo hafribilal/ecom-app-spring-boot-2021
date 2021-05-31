@@ -21,6 +21,6 @@ public class Article implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private Administrateur vendeur;
+    private Admin vendeur;
 
 }
