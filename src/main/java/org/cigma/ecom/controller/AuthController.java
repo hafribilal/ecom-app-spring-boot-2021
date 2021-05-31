@@ -1,6 +1,6 @@
 package org.cigma.ecom.controller;
 
-import org.cigma.ecom.model.Administrateur;
+import org.cigma.ecom.model.Admin;
 import org.cigma.ecom.model.Client;
 import org.cigma.ecom.model.Compt;
 import org.cigma.ecom.service.IAdminService;
@@ -65,13 +65,15 @@ public class AuthController {
             status = HttpStatus.OK;
             //send Mail
             smtpService.SendMail(client);
+            //Just for security the password don't return to client
+            client.setPassword("xxxxxx", client.getPassword());
         }
         return new ResponseEntity<>(client,status);
 
     }
 
-    @PostMapping(value = "/admin/signup",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> adminSignUp(@RequestBody Administrateur admin) throws Exception {
+    @PostMapping(value = "/admin/signup", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> adminSignUp(@RequestBody Admin admin) throws Exception {
         HttpStatus status;
         admin = aService.insertAdmin(admin);
         if (admin == null)
@@ -80,6 +82,8 @@ public class AuthController {
             status = HttpStatus.OK;
             //send Mail
             smtpService.SendMail(admin);
+            //Just for security the password don't return to client
+            admin.setPassword("xxxxxx", admin.getPassword());
         }
         return new ResponseEntity<>(admin,status);
     }
