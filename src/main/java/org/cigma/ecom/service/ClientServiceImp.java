@@ -21,6 +21,8 @@ public class ClientServiceImp implements IClientService{
     @Override
     public Client insertClient(Client c) {
         if (repository.existsById(c.getId()) || repository.existsUsername(c.getUsername()) || repository.existsEmail(c.getEmail())){
+            System.out.println("Signup refused !!!");
+            System.out.println("ID = " + c.getId() + " ~ Username = " + c.getUsername() + " ~ Email = " + c.getEmail());
             return null;
         }
         c.setPassword(passwordEncoder.encode(c.getPassword()),c.getPassword());
