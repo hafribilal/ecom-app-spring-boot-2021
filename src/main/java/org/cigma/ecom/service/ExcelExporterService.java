@@ -1,10 +1,4 @@
-package org.cigma.ecom.model;
-
-import java.io.IOException;
-import java.util.List;
-
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
+package org.cigma.ecom.service;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -12,13 +6,19 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.cigma.ecom.model.Panier;
 
-public class PanierExcelExporter {
-    private XSSFWorkbook workbook;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
+
+public class ExcelExporterService {
+    private final XSSFWorkbook workbook;
     private XSSFSheet sheet;
-    private List<Panier> listPaniers;
+    private final List<Panier> listPaniers;
 
-    public PanierExcelExporter(List<Panier> listPaniers) {
+    public ExcelExporterService(List<Panier> listPaniers) {
         this.listPaniers = listPaniers;
         workbook = new XSSFWorkbook();
     }
