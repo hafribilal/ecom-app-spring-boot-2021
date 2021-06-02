@@ -1,6 +1,14 @@
 package org.cigma.ecom.controller;
 
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
+import org.cigma.ecom.model.Compt;
 import org.cigma.ecom.model.Panier;
+import org.cigma.ecom.model.PanierExcelExporter;
 import org.cigma.ecom.service.IPanierService;
 import org.cigma.ecom.util.CheckUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
@@ -59,5 +68,22 @@ public class PanierController {
     public void deleteOne(@PathVariable("id") int id,@RequestHeader("Authorization")String auth) {
         String username = checkUser.getUsername(auth);
         service.deletePanier(id,username);
+    }
+
+    @GetMapping(path="/{id}/export")
+    public void exportToExcel(HttpServletResponse response, String auth) throws IOException {
+        response.setContentType("application/octet-stream");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=panier_" + currentDateTime + ".xlsx";
+        response.setHeader(headerKey, headerValue);
+
+        List<Panier> listPaniers= service.selectAll(checkUser.getUsername(auth));
+
+        PanierExcelExporter excelExporter = new  PanierExcelExporter(listPaniers);
+
+        excelExporter.export(response);
     }
 }
