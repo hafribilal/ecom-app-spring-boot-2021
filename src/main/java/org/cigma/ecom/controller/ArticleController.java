@@ -39,14 +39,21 @@ public class ArticleController {
         return service.search(search);
     }
 
-    @GetMapping(path="/{id}",produces= MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Article getOne(@PathVariable("id") int id) {
         return service.selectOne(id);
     }
 
-    @GetMapping(path = "/all" , produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Article> getAll(){
+    @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Article> getAll() {
         return service.selectAll();
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping(path = "/my", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Article> getMy(@RequestHeader("Authorization") String auth) {
+        String username = checkUser.getUsername(auth);
+        return service.selectByUser(username);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

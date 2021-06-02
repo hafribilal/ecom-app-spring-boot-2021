@@ -14,6 +14,8 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
 
     List<Article> findArticlesByTitreContains(String search);
 
+    List<Article> findArticlesByVendeur_Username(String username);
+
     Page<Article> findByTitreContainsOrDescriptionContains(String titre, String description, Pageable p);
 
     Page<Article> findArticlesByTitreContains(String search, Pageable p);

@@ -17,6 +17,8 @@ public interface IArticleService {
 
     List<Article> selectAll();
 
+    List<Article> selectByUser(String username);
+
     Page<Article> getPage(Pageable p);
 
     List<Article> search(String search);

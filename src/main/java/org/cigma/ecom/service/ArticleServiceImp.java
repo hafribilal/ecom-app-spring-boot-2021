@@ -61,6 +61,11 @@ public class ArticleServiceImp implements IArticleService {
     }
 
     @Override
+    public List<Article> selectByUser(String username) {
+        return repository.findArticlesByVendeur_Username(username);
+    }
+
+    @Override
     public Page<Article> getPage(Pageable p) {
         return repository.findAll(p);
     }
@@ -68,7 +73,7 @@ public class ArticleServiceImp implements IArticleService {
     @Override
     public List<Article> search(String search) {
         //return repository.findArticlesByTitreContains(search);
-        return repository.findByTitreContainsOrDescriptionContains(search,search);
+        return repository.findByTitreContainsOrDescriptionContains(search, search);
     }
 
     @Override
