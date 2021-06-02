@@ -16,9 +16,9 @@ public class Article implements Serializable {
     private int id;
     private String titre;
     private String description;
-    private int price;
+    private int prix = 0;
     private String type;
-    private int stock;
+    private int stock = 0;
     @Lob
     @Basic(fetch = FetchType.LAZY)
     private byte[] thumbnail;
