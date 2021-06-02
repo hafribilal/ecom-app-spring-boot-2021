@@ -16,11 +16,18 @@ public class Article implements Serializable {
     private int id;
     private String titre;
     private String description;
+    private int price;
     private String type;
     private int stock;
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    private byte[] thumbnail;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Admin vendeur;
+//    @Lob
+//    @Basic(fetch = FetchType.EAGER)
+//    private List<Galerie> galerieList;
 
 }
