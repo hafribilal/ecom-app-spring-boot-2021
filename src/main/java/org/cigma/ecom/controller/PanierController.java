@@ -48,6 +48,12 @@ public class PanierController {
         return service.selectAll(username);
     }
 
+    @GetMapping(path = "/count", produces = MediaType.APPLICATION_JSON_VALUE)
+    public long getCount(@RequestHeader("Authorization") String auth) {
+        String username = checkUser.getUsername(auth);
+        return service.selectAll(username).stream().count();
+    }
+
     @PostMapping(path = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     public Panier add(@RequestBody Panier p, @RequestHeader("Authorization") String auth) {
         String username = checkUser.getUsername(auth);
