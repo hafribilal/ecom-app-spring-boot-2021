@@ -35,19 +35,19 @@ public class Compt {
     }
 
     public void setPassword(String newPassword, String oldPassword) {
-        if (this.password == oldPassword){
+        if (this.password == oldPassword) {
             this.password = newPassword;
         }
     }
 
+    public void hidePassword() {
+        this.password = "xxxxxx";
+    }
+
     public boolean signin(String username, String password) {
-        if (this.username == username || this.email == username){
-            if (this.password == password){
-                return true;
-            }else {
-                return false;
-            }
-        }else {
+        if (this.username == username || this.email == username) {
+            return this.password == password;
+        } else {
             return false;
         }
     }
