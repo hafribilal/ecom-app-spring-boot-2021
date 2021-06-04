@@ -39,7 +39,9 @@ public class PanierController {
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Panier getOne(@PathVariable("id") int id, @RequestHeader("Authorization") String auth) {
         String username = checkUser.getUsername(auth);
-        return service.selectOne(id, username);
+        Panier p = service.selectOne(id, username);
+        p.getProprietaire().hidePassword();
+        return p;
     }
 
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -57,14 +59,18 @@ public class PanierController {
     @PostMapping(path = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     public Panier add(@RequestBody Panier p, @RequestHeader("Authorization") String auth) {
         String username = checkUser.getUsername(auth);
-        return service.insertPanier(p, username);
+        p = service.insertPanier(p, username);
+        p.getProprietaire().hidePassword();
+        return p;
     }
 
     @PutMapping(path = "/update", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public Panier update(@RequestBody Panier p, @RequestHeader("Authorization") String auth) {
         String username = checkUser.getUsername(auth);
-        return service.updatePanier(p, username);
+        p = service.updatePanier(p, username);
+        p.getProprietaire().hidePassword();
+        return p;
     }
 
     @DeleteMapping(path = "/{id}")
