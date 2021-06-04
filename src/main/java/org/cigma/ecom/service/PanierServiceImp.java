@@ -32,7 +32,7 @@ public class PanierServiceImp implements IPanierService {
             }
             p.setProprietaire(client.findClientByUsername(username));
             p = repository.save(p);
-            p.getProprietaire().hidePassword();
+            //p.getProprietaire().hidePassword();
             return p;
         }
         return null;
@@ -49,7 +49,7 @@ public class PanierServiceImp implements IPanierService {
             //old.setProprietaire(p.getProprietaire());
             old.setArticle(p.getArticle());
             old = repository.save(old);
-            old.getProprietaire().hidePassword();
+            //old.getProprietaire().hidePassword();
             return old;
         }
         return null;
@@ -70,7 +70,7 @@ public class PanierServiceImp implements IPanierService {
         Panier p = repository.findById(id).get();
         if (username.equals(p.getProprietaire().getUsername())) {
             p = repository.findById(id).get();
-            p.getProprietaire().hidePassword();
+            //p.getProprietaire().hidePassword();
             return p;
         }
         return null;

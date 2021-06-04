@@ -7,11 +7,13 @@ import org.cigma.ecom.service.IAdminService;
 import org.cigma.ecom.service.IClientService;
 import org.cigma.ecom.service.JwtUserDetailsService;
 import org.cigma.ecom.service.SmtpService;
+import org.cigma.ecom.util.CheckUser;
 import org.cigma.ecom.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -35,15 +37,18 @@ public class AuthController {
     IAdminService aService;
     @Autowired
     SmtpService smtpService;
+    @Autowired
+    CheckUser checkUser;
 
-    @PostMapping(value = "/login",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
     public String createAuthenticationToken(@RequestBody Compt authenticationRequest) throws Exception {
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails);
-        System.out.println("Token : "+token);
+        System.out.println("Token : " + token);
         return token;
     }
+
     private void authenticate(String username, String password) throws Exception {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
@@ -85,6 +90,13 @@ public class AuthController {
             //Just for security the password don't return to client
             admin.setPassword("xxxxxx", admin.getPassword());
         }
-        return new ResponseEntity<>(admin,status);
+        return new ResponseEntity<>(admin, status);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
+    public String getUser(@RequestHeader("Authorization") String auth) {
+        String username = checkUser.getUsername(auth);
+        return userDetailsService.loadUserByUsername(username).getAuthorities().toString();
     }
 }

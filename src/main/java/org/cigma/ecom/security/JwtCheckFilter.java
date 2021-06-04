@@ -4,13 +4,10 @@ import io.jsonwebtoken.ExpiredJwtException;
 import org.cigma.ecom.service.JwtUserDetailsService;
 import org.cigma.ecom.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -47,9 +44,7 @@ public class JwtCheckFilter extends OncePerRequestFilter {
         }
         System.out.println(" = ");
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null){
-            System.out.println("Username : "+username);
             UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
-            System.out.println("userDetails : "+userDetails.getAuthorities().toString());
             if (jwtTokenUtil.validateToken(token,userDetails)){
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));

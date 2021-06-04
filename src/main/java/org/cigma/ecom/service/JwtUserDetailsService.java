@@ -46,7 +46,6 @@ public class JwtUserDetailsService implements UserDetailsService {
             comptAuthority = authorityListGuest;
         }
 
-        //compt.getRole()=="ADMIN" ? authorityListAdmin : authorityListUser
         User user = new User(compt.getUsername(), compt.getPassword(), comptAuthority);
         System.out.println("User  Username "+user.getUsername()+" Role: "+user.getAuthorities());
         return user;
