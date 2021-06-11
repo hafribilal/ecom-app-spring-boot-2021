@@ -46,7 +46,7 @@ public class ArticleServiceImp implements IArticleService {
 
     @Override
     public void deleteArticle(int id, String username) {
-        if (!repository.existsArticleOnPanier(id) && repository.findById(id).get().getVendeur().getUsername() == username)
+        if (!repository.existsArticleOnPanier(id) && username.equals(repository.findById(id).get().getVendeur().getUsername()))
             repository.deleteById(id);
     }
 
