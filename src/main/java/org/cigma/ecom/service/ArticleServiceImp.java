@@ -31,6 +31,7 @@ public class ArticleServiceImp implements IArticleService {
     @Override
     public Article updateArticle(Article a, String username) {
         Article old = repository.findById(a.getId()).get();
+        //old.getVendeur().getUsername() == username ==> false
         if (username.equals(old.getVendeur().getUsername())) {
             old.setTitre(a.getTitre());
             old.setDescription(a.getDescription());
