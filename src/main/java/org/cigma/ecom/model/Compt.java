@@ -12,7 +12,7 @@ public class Compt {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private int id;
-    @Column(unique=true)
+    @Column(unique = true, nullable = false)
     private String username;
     @Column(nullable = false)
     private String password;

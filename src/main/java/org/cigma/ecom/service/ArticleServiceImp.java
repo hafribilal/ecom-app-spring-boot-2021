@@ -31,14 +31,13 @@ public class ArticleServiceImp implements IArticleService {
     @Override
     public Article updateArticle(Article a, String username) {
         Article old = repository.findById(a.getId()).get();
-        if (old.getVendeur().getUsername() == username) {
+        if (username.equals(old.getVendeur().getUsername())) {
             old.setTitre(a.getTitre());
             old.setDescription(a.getDescription());
             if (a.getStock() > 0)
                 old.setStock(a.getStock());
             else old.setStock(1);
             old.setType(a.getType());
-            //old.setVendeur(a.getVendeur());
             return repository.save(old);
         }
         return null;
